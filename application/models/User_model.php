@@ -30,18 +30,42 @@ class User_model extends CI_Model {
 	 * @param mixed $password
 	 * @return bool true on success, false on failure
 	 */
-	public function create_user($username, $email, $password) {
+	public function create_user($username, $email, $password, $activation_key) {
 		
 		$data = array(
 			'username'   => $username,
 			'email'      => $email,
 			'password'   => $this->hash_password($password),
 			'created_at' => date('Y-m-j H:i:s'),
+			'activation_key' => $activation_key
 		);
 		
 		$this->db->insert('users', $data);
 		return $this->db->insert_id(); 
 		
+	}
+
+	/**
+	 * activate_user function.
+	 *
+	 * @access public
+	 * @param mixed $activation_key
+	 * @return bool true on success, false on failure
+	 */
+	public function activate_user($activation_key) {
+
+		$data = array(
+			'is_confirmed' => 1
+		);
+
+		$this->db->where('activation_key', $activation_key);
+		$this->db->update('users', $data);
+		$this->db->select('id');
+		$this->db->from('users');
+		$this->db->where('activation_key', $activation_key);
+		$this->db->where('is_confirmed', 0);
+
+		return $this->db->get()->row('id');
 	}
 	
 	/**
