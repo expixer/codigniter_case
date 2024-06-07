@@ -35,6 +35,7 @@
  * @since	Version 1.0.0
  * @filesource
  */
+require_once __DIR__ . '/vendor/autoload.php';
 
 /*
  *---------------------------------------------------------------
