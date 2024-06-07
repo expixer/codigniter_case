@@ -26,4 +26,4 @@ RUN composer dump-autoload
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache modules if needed (optional)
-# RUN a2enmod rewrite
+ RUN a2enmod rewrite
