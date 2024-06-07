@@ -8,6 +8,8 @@ services:
       - db
     volumes:
       - .:/var/www/html/
+    working_dir: /var/www/html
+    command: /bin/bash -c "composer install --no-interaction --no-plugins --no-scripts --no-dev --prefer-dist -vvv && apache2-foreground"
     ports:
       - 7700:80
   db:
