@@ -64,4 +64,30 @@ class Grade_model extends CI_Model
 		$this->db->where('id', $id);
 		return $this->db->get('grades')->row();
 	}
+
+	public function check_if_midterm_and_final_given($student_id, $course_id)
+	{
+		$this->db->where('student_id', $student_id);
+		$this->db->where('course_id', $course_id);
+		$this->db->where('midterm IS NOT NULL');
+		$this->db->where('final IS NOT NULL');
+		$query = $this->db->get('grades');
+		return $query->num_rows() > 0;
+	}
+
+	public function update_average_and_letter()
+	{
+		$this->db->query('UPDATE grades SET average = midterm * 0.4 + final * 0.6 WHERE midterm IS NOT NULL AND final IS NOT NULL');
+		$this->db->query('UPDATE grades SET letter = CASE
+			WHEN average >= 90 THEN "AA"
+			WHEN average >= 80 THEN "AB"
+			WHEN average >= 75 THEN "BA"
+			WHEN average >= 65 THEN "BB"
+			WHEN average >= 60 THEN "CB"
+			WHEN average >= 50 THEN "CC"
+			WHEN average >= 45 THEN "DD"
+			ELSE "F"
+			END
+			WHERE midterm IS NOT NULL AND final IS NOT NULL');
+	}
 }

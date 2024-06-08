@@ -7,7 +7,11 @@ class Course_model extends CI_Model {
 
 	public function insert($data) {
 		$this->db->insert('courses', $data);
-		return $this->db->insert_id();
+		$course_id = $this->db->insert_id();
+		$teacher_id = extract_user_from_token()->id;
+		$this->db->insert('teacher_courses', ['teacher_id' => $teacher_id, 'course_id' => $course_id]);
+
+		return $course_id;
 	}
 
 	public function is_teacher_of_course($course_id, $teacher_id) {

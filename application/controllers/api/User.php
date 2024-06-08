@@ -1,29 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/* On your database, open a SQL terminal paste this and execute: */
-// CREATE TABLE IF NOT EXISTS `users` (
-//   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-//   `username` varchar(255) NOT NULL DEFAULT '',
-//   `email` varchar(255) NOT NULL DEFAULT '',
-//   `password` varchar(255) NOT NULL DEFAULT '',
-//   `avatar` varchar(255) DEFAULT 'default.jpg',
-//   `created_at` datetime NOT NULL,
-//   `updated_at` datetime DEFAULT NULL,
-//   `is_admin` tinyint(1) unsigned NOT NULL DEFAULT '0',
-//   `is_confirmed` tinyint(1) unsigned NOT NULL DEFAULT '0',
-//   `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0',
-//   PRIMARY KEY (`id`)
-// );
-// CREATE TABLE IF NOT EXISTS `ci_sessions` (
-//   `id` varchar(40) NOT NULL,
-//   `ip_address` varchar(45) NOT NULL,
-//   `timestamp` int(10) unsigned DEFAULT 0 NOT NULL,
-//   `data` blob NOT NULL,
-//   PRIMARY KEY (id),
-//   KEY `ci_sessions_timestamp` (`timestamp`)
-// );
-
 
 require(APPPATH . '/libraries/REST_Controller.php');
 
@@ -78,7 +55,7 @@ class User extends REST_Controller
 				$final['message'] = 'Kayıt başarılı';
 				$final['note'] = 'Hesabınız oluşturuldu, giriş yapmak için epostanıza gönderilen aktivasyon linkine tıklayın.';
 
-				// send email
+				// Aktivasyon maili
 				$subject = 'Hesap Aktivasyonu';
 				$message = 'Merhaba ' . $username . ',<br><br>Hesabınızı aktive etmek için aşağıdaki linke tıklayın:<br><br><a href="' . base_url() . 'activate/' . $activation_key . '">Hesabı Aktifleştir</a>';
 				$this->smtp->send($email, $subject, $message);
@@ -152,22 +129,5 @@ class User extends REST_Controller
 
 	}
 
-	public function logout_post()
-	{
-
-		if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
-
-			foreach ($_SESSION as $key => $value) {
-				unset($_SESSION[$key]);
-			}
-
-			$this->response(['Logout success!'], REST_Controller::HTTP_OK);
-
-		} else {
-
-			$this->response(['Bir problem oldu. Tekrar deneyin.'], REST_Controller::HTTP_OK);
-		}
-
-	}
 
 }

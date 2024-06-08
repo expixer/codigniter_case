@@ -59,6 +59,7 @@ class Teacher extends REST_Controller
 		$students = $this->User_model->get_student_of_teacher(extract_user_from_token()->id);
 		$this->response($students, REST_Controller::HTTP_OK);
 	}
+
 	public function student_get($id)
 	{
 		if (!$this->User_model->is_teacher_of_student($id, extract_user_from_token()->id)) {
@@ -70,7 +71,7 @@ class Teacher extends REST_Controller
 
 	public function student_post()
 	{
-		$this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric');
+		$this->form_validation->set_rules('username', 'Username', 'required');
 		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 		$this->form_validation->set_rules('password', 'Password', 'required');
 
@@ -86,12 +87,18 @@ class Teacher extends REST_Controller
 		$role = 'student';
 
 		$this->User_model->create_user($username, $email, $password, $activation_key, $role);
+
+		// Aktivasyon maili
+		$subject = 'Hesap Aktivasyonu';
+		$message = 'Merhaba ' . $username . ',<br><br>Hesabınızı aktive etmek için aşağıdaki linke tıklayın:<br><br><a href="' . base_url() . 'activate/' . $activation_key . '">Hesabı Aktifleştir</a>';
+		$this->smtp->send($email, $subject, $message);
+
 		$this->response(['Öğrenci oluşturuldu.'], REST_Controller::HTTP_CREATED);
 	}
 
 	public function student_put($id)
 	{
-		if (!$this->User_model->is_teacher_of_student($id, extract_user_from_token()->id)){
+		if (!$this->User_model->is_teacher_of_student($id, extract_user_from_token()->id)) {
 			$this->response(['Bu öğrencinin öğretmeni değilsiniz.'], REST_Controller::HTTP_FORBIDDEN);
 		}
 		$input = $this->put();
@@ -101,7 +108,7 @@ class Teacher extends REST_Controller
 
 	public function student_delete($id)
 	{
-		if (!$this->User_model->is_teacher_of_student($id, extract_user_from_token()->id)){
+		if (!$this->User_model->is_teacher_of_student($id, extract_user_from_token()->id)) {
 			$this->response(['Bu öğrencinin öğretmeni değilsiniz.'], REST_Controller::HTTP_FORBIDDEN);
 		}
 		$this->User_model->delete($id);
@@ -126,8 +133,13 @@ class Teacher extends REST_Controller
 
 	public function grade_post()
 	{
+
+		if (!$this->Course_model->is_teacher_of_course($this->input->post('course_id'), extract_user_from_token()->id)) {
+			$this->response(['Bu dersin öğretmeni değilsiniz.'], REST_Controller::HTTP_FORBIDDEN);
+		}
 		$input = $this->input->post();
 		$this->Grade_model->insert($input);
+		$this->Grade_model->update_average_and_letter($input['student_id'], $input['course_id']);
 		$this->response(['Öğrenciye not verildi.'], REST_Controller::HTTP_OK);
 	}
 
@@ -139,6 +151,7 @@ class Teacher extends REST_Controller
 		}
 		$input = $this->put();
 		$this->Grade_model->update($id, $input);
+		$this->Grade_model->update_average_and_letter($input['student_id'], $input['course_id']);
 		$this->response(['Öğrenci notu güncellendi.'], REST_Controller::HTTP_OK);
 	}
 

@@ -37,8 +37,6 @@ class Smtp
 
 	public function send($to, $subject, $message)
 	{
-		print_r($this->CI->config->item('protocol'));
-
 		try {
 			$mail = new PHPMailer(true);
 			$mail->isSMTP(); // SMTP kullan

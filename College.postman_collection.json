@@ -1,0 +1,650 @@
+{
+	"info": {
+		"_postman_id": "6b9d1204-b26e-472f-a9f8-b3a108107a3e",
+		"name": "College",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10751797",
+		"_collection_link": "https://www.postman.com/martian-equinox-810035/workspace/codign/collection/10751797-6b9d1204-b26e-472f-a9f8-b3a108107a3e?action=share&source=collection_link&creator=10751797"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "{{url}}/register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Hasan",
+									"type": "text"
+								},
+								{
+									"key": "surname",
+									"value": "Öyük",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "hassan",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "hasan@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "ahmet_kar",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teacher",
+			"item": [
+				{
+					"name": "Course",
+					"item": [
+						{
+							"name": "{{url}}/api/teacher/course",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Matematik",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/teacher/course",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"course"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{url}}/api/teacher/courses by teacher",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/teacher/courses",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{url}}/api/teacher/course/1",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/teacher/course/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"course",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{url}}/api/teacher/course/1",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"Fizik\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/teacher/course/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"course",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{url}}/api/teacher/course/1",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/teacher/course/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"course",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Student",
+					"item": [
+						{
+							"name": "{{url}}/api/teacher/student",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Ahmet",
+											"type": "text"
+										},
+										{
+											"key": "surname",
+											"value": "Akay",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "ahmet_ak",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "ahmetak@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "123456",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/teacher/student",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"student"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{url}}/api/teacher/students",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/teacher/students",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"students"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{url}}/api/teacher/student/9",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/teacher/student/9",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"student",
+										"9"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{url}}/api/teacher/student/9",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"Murat\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/teacher/student/9",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"student",
+										"9"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{url}}/api/teacher/course/9",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/teacher/student/9",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"student",
+										"9"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Grade",
+					"item": [
+						{
+							"name": "{{url}}/api/teacher/grade",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "course_id",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "midterm",
+											"value": "50",
+											"type": "text"
+										},
+										{
+											"key": "student_id",
+											"value": "9",
+											"type": "text"
+										},
+										{
+											"key": "final",
+											"value": "80",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/teacher/grade",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"grade"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/teacher/grades of teacher",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/teacher/grades",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"grades"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{url}}/api/teacher/grade/1",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/teacher/grade/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"grade",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{url}}/api/teacher/grade/1",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teacher_jwt}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"midterm\": \"20\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/teacher/grade/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										"grade",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "{{url}}/api/student/grade_by_course/1",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{student_jwt}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/student/grade_by_course/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"student",
+								"grade_by_course",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/api/student/grades",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{student_jwt}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/student/grades",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"student",
+								"grades"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:7700",
+			"type": "string"
+		},
+		{
+			"key": "student_jwt",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjkiLCJyb2xlIjoic3R1ZGVudCIsInVzZXJuYW1lIjoiYWhtZXRfa2FyIiwiQVBJX1RJTUUiOjE3MTc4ODYyMDd9.5vGvS-MI6cpp6bIMrerzDN0i6l1jqb48evzj5txb9Qg",
+			"type": "string"
+		},
+		{
+			"key": "teacher_jwt",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjQiLCJyb2xlIjoidGVhY2hlciIsInVzZXJuYW1lIjoibmV3VXNlcjEiLCJBUElfVElNRSI6MTcxNzg1MjA5Nn0.GJWyoI9dYssUV6ZUzbM19-IDWN_ETOvehDA4PcUBmIk",
+			"type": "string"
+		}
+	]
+}
