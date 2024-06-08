@@ -12,4 +12,12 @@ class Grade_model extends CI_Model {
 		$this->db->where('grades.student_id', $student_id);
 		return $this->db->get()->result();
 	}
-}
+	public  function get_by_student_and_course($student_id, $course_id)
+	{
+		$this->db->select('courses.name as course_name, grades.midterm, grades.final, grades.average, grades.letter');
+		$this->db->from('grades');
+		$this->db->join('courses', 'courses.id = grades.course_id');
+		$this->db->where('grades.student_id', $student_id);
+		$this->db->where('grades.course_id', $course_id);
+		return $this->db->get()->result();
+	}}

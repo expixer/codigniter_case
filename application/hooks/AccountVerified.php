@@ -7,7 +7,6 @@ class AccountVerified
 	public function verify()
 	{
 		$CI =& get_instance();
-
 		$CI->load->library('Authorization_Token');
 
 		// Controller ve method adlarını al
@@ -15,7 +14,7 @@ class AccountVerified
 		$method = $CI->router->method;
 
 		// Sadece belirli controller ve metodlar için kontrol
-		$controllers_to_check = array('student', 'teacher');
+		$controllers_to_check = array('Student', 'Teacher');
 		if (!in_array($controller, $controllers_to_check)) {
 			return;
 		}

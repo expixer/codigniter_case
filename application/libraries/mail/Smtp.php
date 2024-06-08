@@ -61,12 +61,11 @@ class Smtp
 			$mail->Subject = $subject; // E-posta konusu
 			$mail->Body = $message; // E-posta içeriği HTML olarak
 
-			// Gönderme işlemini gerçekleştiriyoruz
 			$mail->send();
-			echo 'E-posta başarıyla gönderildi!';
+			return true;
 		} catch (Exception $e) {
-			// Hata durumunda hata mesajını gösteriyoruz
-			echo "E-posta gönderilemedi. Hata: {$mail->ErrorInfo}";
+			//echo "E-posta gönderilemedi. Hata: {$mail->ErrorInfo}";
+			return false;
 		}
 	}
 

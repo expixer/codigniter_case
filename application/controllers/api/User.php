@@ -48,11 +48,13 @@ class User extends REST_Controller
 		$this->form_validation->set_rules('username', 'Username', 'trim|required|alpha_numeric|min_length[4]|is_unique[users.username]', array('is_unique' => 'This username already exists. Please choose another one.'));
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[users.email]');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
+		$this->form_validation->set_rules('name', 'Name', 'trim|required');
+		$this->form_validation->set_rules('surname', 'Surname', 'trim|required');
 		//$this->form_validation->set_rules('password_confirm', 'Confirm Password', 'trim|required|min_length[6]|matches[password]');
 
 		if ($this->form_validation->run() === false) {
-
-			$this->response(['Validation rules violated'], REST_Controller::HTTP_OK);
+			$errors = $this->form_validation->error_array();
+			$this->response($errors, REST_Controller::HTTP_BAD_REQUEST);
 
 		} else {
 
@@ -60,7 +62,7 @@ class User extends REST_Controller
 			$email = $this->input->post('email');
 			$password = $this->input->post('password');
 			$activation_key = md5($email . time() . $username);
-			$role = $this->input->post('role');
+			$role = 'teacher';
 
 			if ($res = $this->user_model->create_user($username, $email, $password, $activation_key, $role)) {
 
@@ -75,6 +77,7 @@ class User extends REST_Controller
 				$final['role'] = $res;
 				$final['message'] = 'Kayıt başarılı';
 				$final['note'] = 'Hesabınız oluşturuldu, giriş yapmak için epostanıza gönderilen aktivasyon linkine tıklayın.';
+
 				// send email
 				$subject = 'Hesap Aktivasyonu';
 				$message = 'Merhaba ' . $username . ',<br><br>Hesabınızı aktive etmek için aşağıdaki linke tıklayın:<br><br><a href="' . base_url() . 'activate/' . $activation_key . '">Hesabı Aktifleştir</a>';
@@ -110,18 +113,14 @@ class User extends REST_Controller
 	public function login_post()
 	{
 
-		// set validation rules
 		$this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric');
 		$this->form_validation->set_rules('password', 'Password', 'required');
 
 		if (!$this->form_validation->run()) {
-
-			// validation not ok, send validation errors to the view
-			$this->response(['Validation rules violated'], REST_Controller::HTTP_OK);
-
+			$errors = $this->form_validation->error_array();
+			$this->response($errors, REST_Controller::HTTP_BAD_REQUEST);
 		} else {
 
-			// set variables from the form
 			$username = $this->input->post('username');
 			$password = $this->input->post('password');
 
@@ -129,15 +128,6 @@ class User extends REST_Controller
 
 				$user_id = $this->user_model->get_user_id_from_username($username);
 				$user = $this->user_model->get_user($user_id);
-
-				// set session user datas
-				$_SESSION['user_id'] = (int)$user->id;
-				$_SESSION['id'] = (int)$user->id;
-				$_SESSION['role'] = $user->role;
-				$_SESSION['username'] = (string)$user->username;
-				$_SESSION['logged_in'] = true;
-				$_SESSION['is_confirmed'] = (bool)$user->is_confirmed;
-				$_SESSION['is_admin'] = (bool)$user->is_admin;
 
 				// user login ok
 				$token_data['id'] = $user_id;
@@ -154,7 +144,6 @@ class User extends REST_Controller
 
 			} else {
 
-				// login failed
 				$this->response(['Kullanıcı adı veya parola hatalı.'], REST_Controller::HTTP_OK);
 
 			}
@@ -168,12 +157,10 @@ class User extends REST_Controller
 
 		if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
 
-			// remove session data
 			foreach ($_SESSION as $key => $value) {
 				unset($_SESSION[$key]);
 			}
 
-			// user logout ok
 			$this->response(['Logout success!'], REST_Controller::HTTP_OK);
 
 		} else {

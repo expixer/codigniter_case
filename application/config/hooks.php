@@ -17,3 +17,17 @@ $hook['post_controller_constructor'][] = array(
     'filename' => 'AccountVerified.php',
     'filepath' => 'hooks'
 );
+
+$hook['post_controller_constructor'][] = array(
+	'class'    => 'IsTeacher',
+	'function' => 'verify',
+	'filename' => 'IsTeacher.php',
+	'filepath' => 'hooks'
+);
+
+$hook['post_controller_constructor'][] = array(
+	'class'    => 'IsStudent',
+	'function' => 'verify',
+	'filename' => 'IsStudent.php',
+	'filepath' => 'hooks'
+);
