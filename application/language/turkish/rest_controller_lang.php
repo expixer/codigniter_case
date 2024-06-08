@@ -9,5 +9,5 @@ $lang['text_rest_api_key_unauthorized'] = 'Bu API anahtarı istenen denetleyiciy
 $lang['text_rest_api_key_permissions'] = 'Bu API anahtarı yeterli izne sahip değil';
 $lang['text_rest_api_key_time_limit'] = 'Bu API anahtarı bu yöntem için süre sınırına ulaştı';
 $lang['text_rest_ip_address_time_limit'] = 'Bu IP Adresi bu yöntem için süre sınırına ulaştı';
-$lang['text_rest_unknown_method'] = 'Bilinmeyen yöntem';
+$lang['text_rest_unknown_method'] = 'Hatalı method';
 $lang['text_rest_unsupported'] = 'Desteklenmeyen protokol';

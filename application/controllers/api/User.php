@@ -60,16 +60,19 @@ class User extends REST_Controller
 			$email = $this->input->post('email');
 			$password = $this->input->post('password');
 			$activation_key = md5($email . time() . $username);
+			$role = $this->input->post('role');
 
-			if ($res = $this->user_model->create_user($username, $email, $password, $activation_key)) {
+			if ($res = $this->user_model->create_user($username, $email, $password, $activation_key, $role)) {
 
 				$token_data['id'] = $res;
+				$token_data['role'] = $role;
 				$token_data['username'] = $username;
 				$tokenData = $this->authorization_token->generateToken($token_data);
 				$final = array();
 //				$final['access_token'] = $tokenData;
 				$final['status'] = true;
 				$final['id'] = $res;
+				$final['role'] = $res;
 				$final['message'] = 'Kayıt başarılı';
 				$final['note'] = 'Hesabınız oluşturuldu, giriş yapmak için epostanıza gönderilen aktivasyon linkine tıklayın.';
 				// send email
@@ -129,6 +132,8 @@ class User extends REST_Controller
 
 				// set session user datas
 				$_SESSION['user_id'] = (int)$user->id;
+				$_SESSION['id'] = (int)$user->id;
+				$_SESSION['role'] = $user->role;
 				$_SESSION['username'] = (string)$user->username;
 				$_SESSION['logged_in'] = true;
 				$_SESSION['is_confirmed'] = (bool)$user->is_confirmed;
@@ -136,6 +141,7 @@ class User extends REST_Controller
 
 				// user login ok
 				$token_data['id'] = $user_id;
+				$token_data['role'] = $user->role;
 				$token_data['username'] = $user->username;
 				$tokenData = $this->authorization_token->generateToken($token_data);
 				$final = array();

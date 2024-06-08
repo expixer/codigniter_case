@@ -15,7 +15,7 @@ class AccountVerified
 		$method = $CI->router->method;
 
 		// Sadece belirli controller ve metodlar için kontrol
-		$controllers_to_check = array('Product', 'Token');
+		$controllers_to_check = array('student', 'teacher');
 		if (!in_array($controller, $controllers_to_check)) {
 			return;
 		}
@@ -32,9 +32,8 @@ class AccountVerified
 
 
 		// Token geçersizse 401 Unauthorized döndür
-		$token = str_replace('Bearer ', '', $headers['Authorization']);
-		$decoded = $CI->authorization_token->validateToken($token);
-		if (!$decoded) {
+		$decoded = $CI->authorization_token->validateToken($headers['Authorization']);
+		if (!$decoded["status"]) {
 			header('Content-Type: application/json');
 			http_response_code(401);
 			echo json_encode(array('error' => 'Geçersiz token.'));
