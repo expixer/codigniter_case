@@ -25,7 +25,7 @@ class Teacher extends REST_Controller
 	{
 		$input = $this->input->post();
 		$this->Course_model->insert($input);
-		$this->response(['Course created successfully.'], REST_Controller::HTTP_CREATED);
+		$this->response(['Ders oluşturuldu.'], REST_Controller::HTTP_CREATED);
 	}
 
 	public function course_get($id)
@@ -41,7 +41,7 @@ class Teacher extends REST_Controller
 		}
 		$input = $this->put();
 		$this->Course_model->update($id, $input);
-		$this->response(['Course updated successfully.'], REST_Controller::HTTP_OK);
+		$this->response(['Ders güncellendi.'], REST_Controller::HTTP_OK);
 	}
 
 	public function course_delete($id)
@@ -50,7 +50,7 @@ class Teacher extends REST_Controller
 			$this->response(['Bu dersin öğretmeni değilsiniz.'], REST_Controller::HTTP_FORBIDDEN);
 		}
 		$this->Course_model->delete($id);
-		$this->response(['Course deleted successfully.'], REST_Controller::HTTP_OK);
+		$this->response(['Ders silindi.'], REST_Controller::HTTP_OK);
 	}
 
 	// Student Operations
@@ -86,7 +86,7 @@ class Teacher extends REST_Controller
 		$role = 'student';
 
 		$this->User_model->create_user($username, $email, $password, $activation_key, $role);
-		$this->response(['Student created successfully.'], REST_Controller::HTTP_OK);
+		$this->response(['Öğrenci oluşturuldu.'], REST_Controller::HTTP_CREATED);
 	}
 
 	public function student_put($id)
@@ -96,7 +96,7 @@ class Teacher extends REST_Controller
 		}
 		$input = $this->put();
 		$this->User_model->update($id, $input);
-		$this->response(['Student updated successfully.'], REST_Controller::HTTP_OK);
+		$this->response(['Öğrenci güncellendi.'], REST_Controller::HTTP_OK);
 	}
 
 	public function student_delete($id)
@@ -105,14 +105,41 @@ class Teacher extends REST_Controller
 			$this->response(['Bu öğrencinin öğretmeni değilsiniz.'], REST_Controller::HTTP_FORBIDDEN);
 		}
 		$this->User_model->delete($id);
-		$this->response(['Student deleted successfully.'], REST_Controller::HTTP_OK);
+		$this->response(['Öğrenci kaydı silindi.'], REST_Controller::HTTP_OK);
 	}
 
 	// Grade Operations
+	public function grade_get($id)
+	{
+		$grade = $this->Grade_model->get_by_id($id);
+		if (!$this->Course_model->is_teacher_of_course($grade->course_id, extract_user_from_token()->id)) {
+			$this->response(['Bu dersin öğretmeni değilsiniz.'], REST_Controller::HTTP_FORBIDDEN);
+		}
+		$this->response($grade, REST_Controller::HTTP_OK);
+	}
+
+	public function grades_get()
+	{
+		$grades = $this->Grade_model->get_by_teacher(extract_user_from_token()->id);
+		$this->response($grades, REST_Controller::HTTP_OK);
+	}
+
 	public function grade_post()
 	{
 		$input = $this->input->post();
 		$this->Grade_model->insert($input);
-		$this->response(['Grade assigned successfully.'], REST_Controller::HTTP_OK);
+		$this->response(['Öğrenciye not verildi.'], REST_Controller::HTTP_OK);
 	}
+
+	public function grade_put($id)
+	{
+		$grade = $this->Grade_model->get_by_id($id);
+		if (!$this->Course_model->is_teacher_of_course($grade->course_id, extract_user_from_token()->id)) {
+			$this->response(['Bu dersin öğretmeni değilsiniz.'], REST_Controller::HTTP_FORBIDDEN);
+		}
+		$input = $this->put();
+		$this->Grade_model->update($id, $input);
+		$this->response(['Öğrenci notu güncellendi.'], REST_Controller::HTTP_OK);
+	}
+
 }
