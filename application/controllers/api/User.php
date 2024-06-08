@@ -63,13 +63,13 @@ class User extends REST_Controller
 
 			if ($res = $this->user_model->create_user($username, $email, $password, $activation_key)) {
 
-				$token_data['uid'] = $res;
+				$token_data['id'] = $res;
 				$token_data['username'] = $username;
 				$tokenData = $this->authorization_token->generateToken($token_data);
 				$final = array();
 //				$final['access_token'] = $tokenData;
 				$final['status'] = true;
-				$final['uid'] = $res;
+				$final['id'] = $res;
 				$final['message'] = 'Kayıt başarılı';
 				$final['note'] = 'Hesabınız oluşturuldu, giriş yapmak için epostanıza gönderilen aktivasyon linkine tıklayın.';
 				// send email
@@ -135,7 +135,7 @@ class User extends REST_Controller
 				$_SESSION['is_admin'] = (bool)$user->is_admin;
 
 				// user login ok
-				$token_data['uid'] = $user_id;
+				$token_data['id'] = $user_id;
 				$token_data['username'] = $user->username;
 				$tokenData = $this->authorization_token->generateToken($token_data);
 				$final = array();
