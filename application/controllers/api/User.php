@@ -106,6 +106,10 @@ class User extends REST_Controller
 				$user_id = $this->user_model->get_user_id_from_username($username);
 				$user = $this->user_model->get_user($user_id);
 
+				if ($user->is_confirmed == 0) {
+					$this->response(['Hesabınız aktive edilmemiş. Lütfen epostanıza gönderilen linkten hesabınızı aktif edin.'], REST_Controller::HTTP_UNAUTHORIZED);
+				}
+
 				// user login ok
 				$token_data['id'] = $user_id;
 				$token_data['role'] = $user->role;
@@ -121,7 +125,7 @@ class User extends REST_Controller
 
 			} else {
 
-				$this->response(['Kullanıcı adı veya parola hatalı.'], REST_Controller::HTTP_OK);
+				$this->response(['Kullanıcı adı veya parola hatalı.'], REST_Controller::HTTP_NOT_FOUND);
 
 			}
 
